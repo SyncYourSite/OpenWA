@@ -155,11 +155,16 @@ async function bootstrap() {
             : null,
         },
       },
-      hsts: {
-        maxAge: 31536000,
-        includeSubDomains: true,
-        preload: true,
-      },
+      hsts: isUpgradeInsecureRequestsEnabled(
+        process.env.CSP_UPGRADE_INSECURE_REQUESTS,
+        process.env.NODE_ENV,
+      )
+        ? {
+            maxAge: 31536000,
+            includeSubDomains: true,
+            preload: true,
+          }
+        : false,
       noSniff: true,
       referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
       // Disable for API usage
